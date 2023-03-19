@@ -1,13 +1,17 @@
-# vscode-react-parcel
+# example-weblueth-mirobit
 
-Running React App on [GitHub Pages](https://jp-rad.github.io/vscode-react-parcel/) as a web app.  
+`@weblueth/mirobit`ライブラリを使った`Web Bluetooth`による micro:bit サンプルアプリです。
+
+reactなWebアプリとして、 [GitHub Pages](https://jp-96.github.io/example-weblueth-microbit/)上で、試すことができます。  
 
 **Example**
 ``` App.tsx
 // App.tsx
-
+import React from 'react'
 import Logo from './Logo';  // logo.svg ==> Logo.tsx
 //import './App.css'; // ==> ../index.html
+import { MicrobitContextProvider } from '@weblueth/microbit';
+import { MicrobitConn, MicrobitName, MicrobitBtn, MicrobitAcc } from '../components';
 
 function App() {
   return (
@@ -25,6 +29,17 @@ function App() {
         >
           Learn React
         </a>
+        <MicrobitContextProvider connectionName={"micro:bit"}>
+          <p>
+            <MicrobitConn />
+            <br />
+            micro:bit Name: <MicrobitName />
+            <br />
+            Button A: <MicrobitBtn button='a' /> Button B: <MicrobitBtn button='b' />
+          </p>
+          Accelerometer
+          <MicrobitAcc />
+        </MicrobitContextProvider>
       </header>
     </div>
   );
@@ -69,6 +84,32 @@ https://github.com/jp-rad/vscode-react-parcel.git
 （`[Ctrl]+[C]`で終了します）
 1. ビルドを実行するには、ターミナルを開いて、`yarn build`コマンドを実行します(`packege.json`で定義)  
 （`.build`フォルダ内に生成されます）
+
+## パッケージのインストール
+
+**追加するパッケージ**
+- @weblueth/microbit
+
+```bash
+yarn add --dev @weblueth/microbit
+```
+
+## ソースコードの編集
+
+1. `./src/components/` ファイル群を追加します。
+2. `./src/app/App.tsx` を編集します。
+3. ターミナルで、`yarn start`コマンドを実行し、ウェブブラウザで、[http://localhost:1234](http://localhost:1234)を開きます
+
+## アプリの使い方
+
+1. Bluetoothのボタンサービスと加速度サービスとを有効にしたmicro:bitを起動します（[HEXファイル](https://raw.githubusercontent.com/thegecko/microbit-web-bluetooth/master/hex/ble-open-microbit-universal.hex)）
+1. `REQUEST`ボタンをクリックし、micro:bitデバイスを選択します（ペア設定）
+1. micro:bitデバイスを選択するとデバイス名(`micro:bit Name`)が表示され、接続を待ちます
+1. 接続に成功するとボタンの状態と加速度データが表示されます
+1. `SLOW`ボタンと`FAST`ボタンで加速度データの読み込み頻度を切り替えできます
+1. `DISCONNECT`ボタンをクリックすると切断します
+1. 切断後は、`CONNECT`ボタンで再接続できます
+
 
 ## ウェブアプリのデプロイ
 
